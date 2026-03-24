@@ -1,6 +1,9 @@
 let akten = [];
 let currentIndex = null;
 
+// 🔐 Rolle (admin / user)
+let role = localStorage.getItem("role") || "user";
+
 // SOCKET (optional)
 let socket;
 if (typeof io !== "undefined") {
@@ -40,13 +43,20 @@ function showPage(page) {
 
 // 🔥 Logout
 function logout() {
+  localStorage.clear();
   location.href = "index.html";
 }
 
-// 🔥 Liste anzeigen
+// 🔥 LISTE (CARDS)
 function render() {
   const list = document.getElementById("list");
-  list.innerHTML = "<h2>📂 Patientenakten</h2>";
+
+  list.innerHTML = `
+    <h2>📂 Patientenakten</h2>
+    <div class="card-container"></div>
+  `;
+
+  const container = list.querySelector(".card-container");
 
   akten.forEach((akte, i) => {
     const div = document.createElement("div");
@@ -55,10 +65,13 @@ function render() {
     div.innerHTML = `
       <h3>${akte.name}</h3>
       <p>🎮 ${akte.roblox || "-"}</p>
+
       <button onclick="openAkte(${i})">Öffnen</button>
+
+      ${role === "admin" ? `<button onclick="deleteAkte(${i})">🗑 Löschen</button>` : ""}
     `;
 
-    list.appendChild(div);
+    container.appendChild(div);
   });
 }
 
@@ -72,6 +85,14 @@ function openAkte(i) {
 
   showPage("detail");
   renderFaelle();
+}
+
+// 🔥 Akte löschen
+async function deleteAkte(i) {
+  if (!confirm("Akte wirklich löschen?")) return;
+
+  await fetch("/akten/" + i, { method: "DELETE" });
+  await loadAkten();
 }
 
 // 🔥 Neue Akte
@@ -120,6 +141,9 @@ async function addFall() {
 
   await loadAkten();
 
+  renderFaelle();
+
+  // reset
   document.getElementById("arzt").value = "";
   document.getElementById("diagnose").value = "";
   document.getElementById("med").value = "";
@@ -135,7 +159,7 @@ function renderFaelle() {
 
   if (!akten[currentIndex]) return;
 
-  akten[currentIndex].faelle.forEach((f) => {
+  akten[currentIndex].faelle.forEach((f, index) => {
     const colors = {
       anfahrt: "tag-blue",
       kh: "tag-green",
@@ -163,10 +187,24 @@ function renderFaelle() {
       ❤️ Puls: ${f.puls || "-"} |
       🩸 RR: ${f.rr || "-"} |
       🫁 SpO2: ${f.spo2 || "-"}
+
+      ${role === "admin" ? `<br><button onclick="deleteFall(${index})">🗑 Löschen</button>` : ""}
     `;
 
     container.appendChild(div);
   });
+}
+
+// 🔥 Fall löschen
+async function deleteFall(index) {
+  if (!confirm("Fall löschen?")) return;
+
+  await fetch(`/fall/${currentIndex}/${index}`, {
+    method: "DELETE"
+  });
+
+  await loadAkten();
+  renderFaelle();
 }
 
 // 🔥 Detail schließen

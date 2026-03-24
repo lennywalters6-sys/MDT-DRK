@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>DRK MDT</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <h2>DRK</h2>
+
+    <div class="nav-item active" onclick="showPage('list')">🏥</div>
+    <div class="nav-item" onclick="showPage('new')">➕</div>
+    <div class="nav-item" onclick="logout()">🚪</div>
+  </aside>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- TOP -->
+    <div class="topbar">
+      <input id="search" placeholder="🔍 Suche nach Name oder Roblox...">
+      <div class="user" id="roleDisplay"></div>
+    </div>
+
+    <!-- LISTE -->
+    <div class="panel" id="list">
+      <h2>📂 Patientenakten</h2>
+    </div>
+
+    <!-- NEU -->
+    <div class="panel hidden" id="new">
+      <h2>➕ Neue Patientenakte</h2>
+
+      <input id="name" placeholder="👤 Name">
+      <input id="roblox" placeholder="🎮 Roblox Name">
+
+      <button onclick="addAkte()">Speichern</button>
+    </div>
+
+    <!-- DETAIL -->
+    <div class="detail hidden" id="detail">
+
+      <button onclick="closeDetail()">⬅ Zurück</button>
+      <h2 id="detailName"></h2>
+
+      <div id="faelle"></div>
+
+      <div class="panel">
+        <h3>➕ Neuer Einsatz</h3>
+
+        <input id="arzt" placeholder="👨‍⚕️ Arzt">
+
+        <select id="status">
+          <option value="anfahrt">🚑 Anfahrt</option>
+          <option value="kh">🏥 Krankenhaus</option>
+          <option value="nef">🚨 NEF</option>
+          <option value="stabil">✅ Stabil</option>
+          <option value="kritisch">⚠️ Kritisch</option>
+        </select>
+
+        <input id="diagnose" placeholder="🧠 Diagnose">
+        <input id="med" placeholder="💊 Medikamente">
+
+        <h4>❤️ Vitalwerte</h4>
+        <input id="puls" placeholder="Puls">
+        <input id="rr" placeholder="RR">
+        <input id="spo2" placeholder="SpO2">
+
+        <button onclick="addFall()">Speichern</button>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="script.js" defer></script>
+</body>
+</html>

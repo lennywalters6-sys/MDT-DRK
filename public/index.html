@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>DRK Login</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="login-body">
+
+<div class="login-box">
+  <h2>🚑 DRK MDT</h2>
+
+  <input id="user" placeholder="Benutzername">
+  <input id="pass" type="password" placeholder="Passwort">
+
+  <button onclick="login()">Login</button>
+
+  <p id="error"></p>
+</div>
+
+<script>
+function login(){
+  const user = document.getElementById("user").value;
+  const pass = document.getElementById("pass").value;
+
+  // 👑 ADMIN
+  if(user === "admin" && pass === "admin123"){
+    localStorage.setItem("role", "admin");
+    location.href = "dashboard.html";
+  }
+
+  // 👨‍⚕️ USER
+  else if(user === "drk" && pass === "1234"){
+    localStorage.setItem("role", "user");
+    location.href = "dashboard.html";
+  }
+
+  else{
+    document.getElementById("error").innerText = "❌ Falsche Daten!";
+  }
+}
+</script>
+
+</body>
+</html>

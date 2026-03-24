@@ -1,0 +1,28 @@
+[
+  {
+    "name": "tes",
+    "roblox": "test",
+    "faelle": []
+  },
+  {
+    "name": "test",
+    "roblox": "test",
+    "faelle": []
+  },
+  {
+    "name": "hi",
+    "roblox": "ei",
+    "faelle": [
+      {
+        "arzt": "12",
+        "diagnose": "12",
+        "med": "12",
+        "status": "kh",
+        "puls": "12",
+        "rr": "12",
+        "spo2": "12",
+        "zeit": "24.3.2026, 15:54:18"
+      }
+    ]
+  }
+]
